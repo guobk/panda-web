@@ -31,15 +31,19 @@ export default {
   },
   methods: {
     login () {
+      var _this = this
+      console.log(this.$store.state)
       this.$axios
         .post('/user/login', {
           userName: this.loginForm.username,
           passWord: this.loginForm.password
         })
         .then(successResponse => {
-          debugger
           if (successResponse.data.code === 200) {
-            this.$router.replace({path: '/index'})
+            // var data = this.loginForm
+            _this.$store.commit('login', _this.loginForm)
+            var path = this.$route.query.redirect
+            this.$router.replace({path: path === '/' || path === undefined ? '/index' : path})
           }
         })
         .catch(failResponse => {
